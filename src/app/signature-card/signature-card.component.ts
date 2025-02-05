@@ -1,57 +1,78 @@
-import { Component, Input, Output, EventEmitter } from "@angular/core";
+// signature-card.component.ts
+import { Component, Input, Output, EventEmitter, OnInit } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
-import { PRICE_CONFIG } from "../price-config";
+import { PriceService } from "../price-service";
 
 @Component({
   standalone: true,
   selector: "app-signature-card",
   imports: [CommonModule, FormsModule],
   templateUrl: "./signature-card.component.html",
-  styleUrl: "./signature-card.component.scss",
+  styleUrls: ["./signature-card.component.scss"],
 })
-export class SignatureCardComponent {
+export class SignatureCardComponent implements OnInit {
   @Input() signatory: any;
   @Input() index!: number;
   @Output() cardUpdate = new EventEmitter<{ index: number; signatory: any }>();
   @Output() removeSignatory = new EventEmitter<void>();
 
-  // local price values – these could be passed in or imported from a shared constant file
-  prices = {
-    email: PRICE_CONFIG.emailSignatureRequest,
-    whatsapp: PRICE_CONFIG.whatsappSignatureRequest,
-    sms: PRICE_CONFIG.smsSignatureRequest,
-    linkEmail: PRICE_CONFIG.emailLinkSignatureRequest,
-    linkSms: PRICE_CONFIG.smsLinkSignatureRequest,
-    linkWhatsapp: PRICE_CONFIG.whatsappLinkSignatureRequest,
-    smsValidation: PRICE_CONFIG.smsValidation,
-  };
+  // Definindo os métodos de envio com preços conforme o PriceService
+  methods: { key: string; label: string; price: number }[] = [];
 
-  methods = [
-    { key: "email", label: "Email", price: this.prices.email },
-    { key: "whatsapp", label: "WhatsApp", price: this.prices.whatsapp },
-    { key: "sms", label: "SMS", price: this.prices.sms },
-    { key: "linkEmail", label: "Link por Email", price: this.prices.linkEmail },
-    { key: "linkSms", label: "Link por SMS", price: this.prices.linkSms },
-    {
-      key: "linkWhatsapp",
-      label: "Link por WhatsApp",
-      price: this.prices.linkWhatsapp,
-    },
-    {
-      key: "smsValidation",
-      label: "Validação por SMS",
-      price: this.prices.smsValidation,
-    },
-  ];
+  constructor(public priceService: PriceService) {}
+
+  ngOnInit() {
+    // Inicializa os métodos de envio usando os preços do PriceService
+    this.methods = [
+      {
+        key: "email",
+        label: "Solicitação de assinatura por email",
+        price: this.priceService.prices.emailSignatureRequest,
+      },
+      {
+        key: "whatsapp",
+        label: "Solicitação de assinatura por Whatsapp",
+        price: this.priceService.prices.whatsappSignatureRequest,
+      },
+      {
+        key: "sms",
+        label: "Solicitação de assinatura por SMS",
+        price: this.priceService.prices.smsSignatureRequest,
+      },
+      {
+        key: "linkEmail",
+        label: "Solicitação de assinatura por link assinado por email",
+        price: this.priceService.prices.emailLinkSignatureRequest,
+      },
+      {
+        key: "linkSms",
+        label: "Solicitação de assinatura por link assinado por SMS",
+        price: this.priceService.prices.smsLinkSignatureRequest,
+      },
+      {
+        key: "linkWhatsapp",
+        label: "Solicitação de assinatura por link assinado por Whatsapp",
+        price: this.priceService.prices.whatsappLinkSignatureRequest,
+      },
+      {
+        key: "smsValidation",
+        label: "Assinatura com validação adicional por SMS",
+        price: this.priceService.prices.smsValidation,
+      },
+    ];
+  }
 
   toggle() {
-    this.signatory.expanded = !this.signatory.expanded;
+    // Garante que a propriedade expanded exista para controlar o dropdown
+    if (this.signatory) {
+      this.signatory.expanded = !this.signatory.expanded;
+    }
     this.emitUpdate();
   }
 
   getSelectedMethods(): string {
-    const selected = [];
+    const selected: string[] = [];
     if (this.signatory.email || this.signatory.linkEmail) {
       selected.push("Email");
     }
@@ -78,8 +99,9 @@ export class SignatureCardComponent {
     return cost;
   }
 
+  // Usa o método do PriceService para formatar o valor conforme a moeda atual
   formatCurrency(value: number): string {
-    return `R$ ${value.toFixed(3)}`;
+    return this.priceService.formatCurrency(value);
   }
 
   remove(event: Event) {

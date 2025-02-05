@@ -1,6 +1,6 @@
-import { Component, Input, Output, EventEmitter } from "@angular/core";
+import { Component, Output, EventEmitter } from "@angular/core";
 import { CommonModule } from "@angular/common";
-import { computed, type Signal } from "@angular/core";
+import { PriceService } from "../price-service";
 
 @Component({
   selector: "app-topbar",
@@ -10,11 +10,10 @@ import { computed, type Signal } from "@angular/core";
   styleUrl: "./topbar.component.scss",
 })
 export class TopbarComponent {
-  @Input() showUSD!: Signal<boolean>;
-  @Output() toggleCurrency = new EventEmitter<boolean>();
+  constructor(public priceService: PriceService) {}
 
   onToggle(event: Event) {
-    const checked = (event.target as HTMLInputElement).checked;
-    this.toggleCurrency.emit(checked);
+    // Ao alternar, chama o método que inverte a flag
+    this.priceService.toggleCurrency();
   }
 }

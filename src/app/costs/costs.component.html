@@ -1,7 +1,9 @@
 <div class="card costs-section">
   <div class="cost-card" *ngFor="let cost of costData">
     <h3>{{ cost.title }}</h3>
-    <p class="cost">{{ formatCurrency(cost.value) }}</p>
+    <p class="cost">
+      {{ showUSD() ? formatUSD(cost.value) : formatBRL(cost.value) }}
+    </p>
     <p class="cost-alternate">
       {{ showUSD() ? formatBRL(cost.value) : formatUSD(cost.value) }}
     </p>

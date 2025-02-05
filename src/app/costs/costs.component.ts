@@ -49,16 +49,20 @@ export class CostsComponent {
   }
 
   formatBRL(value: number): string {
-    return `R$ ${value.toLocaleString("pt-BR", {
+    return new Intl.NumberFormat("pt-BR", {
+      style: "currency",
+      currency: "BRL",
       minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    })}`;
+      maximumFractionDigits: 3,
+    }).format(value);
   }
 
   formatUSD(value: number): string {
-    return `USD ${value.toLocaleString("en-US", {
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
       minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    })}`;
+      maximumFractionDigits: 3,
+    }).format(value);
   }
 }

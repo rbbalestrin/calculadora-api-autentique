@@ -1,5 +1,6 @@
-// price-config.ts
 export interface PriceConfig {
+  currency: "USD" | "BRL"; // moeda base
+  conversionRate: number; // taxa de conversão de USD para BRL (ex.: 5 significa 1 USD = 5 BRL)
   createDocument: number;
   emailSignatureRequest: number;
   whatsappSignatureRequest: number;
@@ -11,6 +12,8 @@ export interface PriceConfig {
 }
 
 export const PRICE_CONFIG: PriceConfig = {
+  currency: "USD",
+  conversionRate: 5, // exemplo: 1 USD = 5 BRL
   createDocument: 0.01,
   emailSignatureRequest: 0.002,
   whatsappSignatureRequest: 0.02,
