@@ -26,15 +26,10 @@ export class SignatureCardComponent {
   @Output() cardUpdate = new EventEmitter<{ index: number; signatory: any }>();
   @Output() removeSignatory = new EventEmitter<void>();
 
-  // Vamos manter o array de métodos que será atualizado pelo effect.
   methods: { key: string; label: string; price: number }[] = [];
 
-  // Definindo o effect como um field initializer garante que ele seja executado
-  // no contexto de injeção (sem precisar usar runInInjectionContext no ngOnInit).
-  // OBS: Cuidado com efeitos que recriam arrays a cada execução.
   private updateMethodsEffect = effect(() => {
     const prices: PriceTable = this.priceService.currentPrices();
-    // Se você atualizar o array somente se os preços realmente mudarem, evita loop:
     const newMethods = [
       {
         key: "email",
@@ -72,18 +67,10 @@ export class SignatureCardComponent {
         price: prices.smsValidation,
       },
     ];
-    // Se o array mudou (você pode implementar uma comparação simples) ou simplesmente
-    // atribuir sempre, mas isso pode disparar mudanças se a detecção de mudança
-    // comparar referências.
     this.methods = newMethods;
-    // Você pode usar um console.log para depurar:
-    console.log("Métodos atualizados:", newMethods);
   });
 
-  constructor(public priceService: PriceService) {
-    // O efeito acima, definido como field initializer, já está sendo executado
-    // dentro do contexto de injeção (pois o construtor é um contexto injetável).
-  }
+  constructor(public priceService: PriceService) {}
 
   toggle() {
     this.signatory.expanded = !this.signatory.expanded;
