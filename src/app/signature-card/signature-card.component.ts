@@ -1,6 +1,7 @@
 import { Component, Input, Output, EventEmitter } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
+import { PRICE_CONFIG } from "../price-config";
 
 @Component({
   standalone: true,
@@ -17,13 +18,13 @@ export class SignatureCardComponent {
 
   // local price values – these could be passed in or imported from a shared constant file
   prices = {
-    email: 0.013,
-    whatsapp: 0.12,
-    sms: 0.16,
-    linkEmail: 0.013,
-    linkSms: 0.16,
-    linkWhatsapp: 0.3,
-    smsValidation: 0.16,
+    email: PRICE_CONFIG.emailSignatureRequest,
+    whatsapp: PRICE_CONFIG.whatsappSignatureRequest,
+    sms: PRICE_CONFIG.smsSignatureRequest,
+    linkEmail: PRICE_CONFIG.emailLinkSignatureRequest,
+    linkSms: PRICE_CONFIG.smsLinkSignatureRequest,
+    linkWhatsapp: PRICE_CONFIG.whatsappLinkSignatureRequest,
+    smsValidation: PRICE_CONFIG.smsValidation,
   };
 
   methods = [
