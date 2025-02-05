@@ -48,11 +48,17 @@ export class CostsComponent {
     return `R$ ${value.toFixed(3)}`;
   }
 
-  formatUSD(value: number): string {
-    return `USD ${(value / 5).toFixed(3)}`;
+  formatBRL(value: number): string {
+    return `R$ ${value.toLocaleString("pt-BR", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    })}`;
   }
 
-  formatBRL(value: number): string {
-    return `R$ ${value.toFixed(3)}`;
+  formatUSD(value: number): string {
+    return `USD ${value.toLocaleString("en-US", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    })}`;
   }
 }
