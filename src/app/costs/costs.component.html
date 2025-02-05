@@ -2,9 +2,5 @@
   <div class="cost-card" *ngFor="let cost of costData">
     <h3>{{ cost.title }}</h3>
     <p class="cost">{{ formatCurrency(cost.value) }}</p>
-    <!-- Se desejar exibir o valor na moeda oposta, pode usar um método similar, por exemplo: -->
-    <p class="cost-alternate">
-      {{ priceService.formatAlternateCurrency(cost.value) }}
-    </p>
   </div>
 </div>

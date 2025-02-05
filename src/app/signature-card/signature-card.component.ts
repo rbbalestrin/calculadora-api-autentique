@@ -1,30 +1,41 @@
-import { Component, Input, Output, EventEmitter, OnInit } from "@angular/core";
+import {
+  Component,
+  Input,
+  Output,
+  EventEmitter,
+  ChangeDetectionStrategy,
+} from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { PriceTable } from "../price-config";
 import { PriceService } from "../price-service";
+import { effect } from "@angular/core";
 
 @Component({
   standalone: true,
   selector: "app-signature-card",
   imports: [CommonModule, FormsModule],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: "./signature-card.component.html",
   styleUrls: ["./signature-card.component.scss"],
 })
-export class SignatureCardComponent implements OnInit {
+export class SignatureCardComponent {
   @Input() signatory: any;
   @Input() index!: number;
+
   @Output() cardUpdate = new EventEmitter<{ index: number; signatory: any }>();
   @Output() removeSignatory = new EventEmitter<void>();
 
+  // Vamos manter o array de métodos que será atualizado pelo effect.
   methods: { key: string; label: string; price: number }[] = [];
 
-  constructor(public priceService: PriceService) {}
-
-  ngOnInit() {
-    // Monta os métodos usando a tabela de preços atual
-    const prices: PriceTable = this.priceService.currentPrices;
-    this.methods = [
+  // Definindo o effect como um field initializer garante que ele seja executado
+  // no contexto de injeção (sem precisar usar runInInjectionContext no ngOnInit).
+  // OBS: Cuidado com efeitos que recriam arrays a cada execução.
+  private updateMethodsEffect = effect(() => {
+    const prices: PriceTable = this.priceService.currentPrices();
+    // Se você atualizar o array somente se os preços realmente mudarem, evita loop:
+    const newMethods = [
       {
         key: "email",
         label: "Solicitação de assinatura por email",
@@ -61,10 +72,20 @@ export class SignatureCardComponent implements OnInit {
         price: prices.smsValidation,
       },
     ];
+    // Se o array mudou (você pode implementar uma comparação simples) ou simplesmente
+    // atribuir sempre, mas isso pode disparar mudanças se a detecção de mudança
+    // comparar referências.
+    this.methods = newMethods;
+    // Você pode usar um console.log para depurar:
+    console.log("Métodos atualizados:", newMethods);
+  });
+
+  constructor(public priceService: PriceService) {
+    // O efeito acima, definido como field initializer, já está sendo executado
+    // dentro do contexto de injeção (pois o construtor é um contexto injetável).
   }
 
   toggle() {
-    // Garante que signatory.expanded exista e altera seu valor para controlar o dropdown.
     this.signatory.expanded = !this.signatory.expanded;
     this.emitUpdate();
   }

@@ -8,7 +8,8 @@ export class CostCalculationService {
   constructor(private priceService: PriceService) {}
 
   calculateSignatoryCost(signatory: SignatoryMethod): number {
-    const prices: PriceTable = this.priceService.currentPrices;
+    // Chama o computed signal para obter a tabela de preços atual
+    const prices: PriceTable = this.priceService.currentPrices();
     let cost = 0;
     if (signatory.email) {
       cost += prices.emailSignatureRequest;
@@ -35,7 +36,8 @@ export class CostCalculationService {
   }
 
   calculateTotalCost(signatories: SignatoryMethod[]): number {
-    const prices: PriceTable = this.priceService.currentPrices;
+    // Obtém a tabela de preços atual chamando a função currentPrices()
+    const prices: PriceTable = this.priceService.currentPrices();
     let total = prices.createDocument;
     for (const signatory of signatories) {
       total += this.calculateSignatoryCost(signatory);
