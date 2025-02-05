@@ -2,22 +2,24 @@ import { CommonModule } from "@angular/common";
 import { Component, Input } from "@angular/core";
 import { CostCalculationService } from "../calculation.service";
 import { type Signal } from "@angular/core";
+import { PriceService } from "../price-service";
 
 @Component({
   selector: "app-costs",
   standalone: true,
   imports: [CommonModule],
   templateUrl: "./costs.component.html",
-  styleUrl: "./costs.component.scss",
+  styleUrls: ["./costs.component.scss"],
 })
 export class CostsComponent {
   @Input() documentsPerDay!: Signal<number>;
   @Input() workingDaysPerMonth!: Signal<number>;
   @Input() signatories!: Signal<any[]>;
-  @Input() prices!: any;
-  @Input() showUSD!: Signal<boolean>;
 
-  constructor(private costService: CostCalculationService) {}
+  constructor(
+    private costService: CostCalculationService,
+    public priceService: PriceService,
+  ) {}
 
   get totalCost(): number {
     return this.costService.calculateTotalCost(this.signatories());
@@ -41,28 +43,8 @@ export class CostsComponent {
     ];
   }
 
+  // Utiliza o método centralizado do PriceService para formatar o valor
   formatCurrency(value: number): string {
-    if (this.showUSD()) {
-      return `USD ${(value / 5).toFixed(3)}`;
-    }
-    return `R$ ${value.toFixed(3)}`;
-  }
-
-  formatBRL(value: number): string {
-    return new Intl.NumberFormat("pt-BR", {
-      style: "currency",
-      currency: "BRL",
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 3,
-    }).format(value);
-  }
-
-  formatUSD(value: number): string {
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 3,
-    }).format(value);
+    return this.priceService.formatCurrency(value);
   }
 }
