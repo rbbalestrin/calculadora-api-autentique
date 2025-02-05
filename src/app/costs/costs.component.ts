@@ -1,5 +1,6 @@
 import { CommonModule } from "@angular/common";
 import { Component, Input } from "@angular/core";
+import { CostCalculationService } from "../calculation.service";
 import { type Signal } from "@angular/core";
 
 @Component({
@@ -16,38 +17,10 @@ export class CostsComponent {
   @Input() prices!: any;
   @Input() showUSD!: Signal<boolean>;
 
-  get totalCost(): number {
-    let total = this.prices.createDocument;
-    for (const signatory of this.signatories()) {
-      total += this.calculateSignatoryCost(signatory);
-    }
-    return total;
-  }
+  constructor(private costService: CostCalculationService) {}
 
-  calculateSignatoryCost(signatory: any): number {
-    let cost = 0;
-    if (signatory.email) {
-      cost += this.prices.email;
-    }
-    if (signatory.whatsapp) {
-      cost += this.prices.whatsapp;
-    }
-    if (signatory.sms) {
-      cost += this.prices.sms;
-    }
-    if (signatory.linkEmail) {
-      cost += this.prices.linkEmail;
-    }
-    if (signatory.linkSms) {
-      cost += this.prices.linkSms;
-    }
-    if (signatory.linkWhatsapp) {
-      cost += this.prices.linkWhatsapp;
-    }
-    if (signatory.smsValidation) {
-      cost += this.prices.smsValidation;
-    }
-    return cost;
+  get totalCost(): number {
+    return this.costService.calculateTotalCost(this.signatories());
   }
 
   get costData() {
@@ -72,7 +45,7 @@ export class CostsComponent {
     if (this.showUSD()) {
       return `USD ${(value / 5).toFixed(3)}`;
     }
-    return `R$ ${value.toFixed(2)}`;
+    return `R$ ${value.toFixed(3)}`;
   }
 
   formatUSD(value: number): string {
@@ -80,6 +53,6 @@ export class CostsComponent {
   }
 
   formatBRL(value: number): string {
-    return `R$ ${value.toFixed(2)}`;
+    return `R$ ${value.toFixed(3)}`;
   }
 }
