@@ -72,7 +72,7 @@ export class CostsComponent {
     if (this.showUSD()) {
       return `USD ${(value / 5).toFixed(3)}`;
     }
-    return `R$ ${value.toFixed(3)}`;
+    return `R$ ${value.toFixed(2)}`;
   }
 
   formatUSD(value: number): string {
@@ -80,6 +80,6 @@ export class CostsComponent {
   }
 
   formatBRL(value: number): string {
-    return `R$ ${value.toFixed(3)}`;
+    return `R$ ${value.toFixed(2)}`;
   }
 }
