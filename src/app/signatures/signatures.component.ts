@@ -3,9 +3,8 @@ import {
   Input,
   Output,
   EventEmitter,
-  Signal,
-  WritableSignal,
   signal,
+  WritableSignal,
 } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { SignatureCardComponent } from "../signature-card/signature-card.component";
@@ -16,20 +15,32 @@ import { SignatoryMethod } from "../app.component";
   standalone: true,
   imports: [CommonModule, SignatureCardComponent],
   templateUrl: "./signatures.component.html",
-  styleUrl: "./signatures.component.scss",
+  styleUrls: ["./signatures.component.scss"], // Corrigido para "styleUrls"
 })
 export class SignaturesComponent {
-  @Input() signatories: WritableSignal<SignatoryMethod[]> = signal([]);
-
-  @Output() addSignatory = new EventEmitter<void>();
+  // Certifique-se de que o sinal é fornecido (pode ser passado pelo componente pai)
+  @Input() signatories!: WritableSignal<SignatoryMethod[]>;
   @Output() updateSignatory = new EventEmitter<{
     index: number;
     signatory: any;
   }>();
   @Output() removeSignatory = new EventEmitter<number>();
 
+  // Em vez de emitir um evento para adicionar, atualizamos o sinal diretamente
   onAddSignatory() {
-    this.addSignatory.emit();
+    this.signatories.update((s: SignatoryMethod[]) => [
+      ...s,
+      {
+        email: false,
+        whatsapp: false,
+        sms: false,
+        linkEmail: false,
+        linkSms: false,
+        linkWhatsapp: false,
+        smsValidation: false,
+        expanded: true,
+      },
+    ]);
   }
 
   onUpdateSignatory({

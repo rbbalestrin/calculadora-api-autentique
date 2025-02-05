@@ -1,39 +1,42 @@
 import { Injectable } from "@angular/core";
-import { PRICE_CONFIG, PriceConfig } from "./price-config";
-import { SignatoryMethod } from "./app.component";
+import { SignatoryMethod } from "./app.component"; // ou o caminho correto
+import { PriceService } from "./price-service";
+import { PriceTable } from "./price-config";
 
 @Injectable({ providedIn: "root" })
 export class CostCalculationService {
-  private prices: PriceConfig = PRICE_CONFIG;
+  constructor(private priceService: PriceService) {}
 
   calculateSignatoryCost(signatory: SignatoryMethod): number {
+    const prices: PriceTable = this.priceService.currentPrices;
     let cost = 0;
     if (signatory.email) {
-      cost += this.prices.emailSignatureRequest;
+      cost += prices.emailSignatureRequest;
     }
     if (signatory.whatsapp) {
-      cost += this.prices.whatsappSignatureRequest;
+      cost += prices.whatsappSignatureRequest;
     }
     if (signatory.sms) {
-      cost += this.prices.smsSignatureRequest;
+      cost += prices.smsSignatureRequest;
     }
     if (signatory.linkEmail) {
-      cost += this.prices.emailLinkSignatureRequest;
+      cost += prices.emailLinkSignatureRequest;
     }
     if (signatory.linkSms) {
-      cost += this.prices.smsLinkSignatureRequest;
+      cost += prices.smsLinkSignatureRequest;
     }
     if (signatory.linkWhatsapp) {
-      cost += this.prices.whatsappLinkSignatureRequest;
+      cost += prices.whatsappLinkSignatureRequest;
     }
     if (signatory.smsValidation) {
-      cost += this.prices.smsValidation;
+      cost += prices.smsValidation;
     }
     return cost;
   }
 
   calculateTotalCost(signatories: SignatoryMethod[]): number {
-    let total = this.prices.createDocument;
+    const prices: PriceTable = this.priceService.currentPrices;
+    let total = prices.createDocument;
     for (const signatory of signatories) {
       total += this.calculateSignatoryCost(signatory);
     }

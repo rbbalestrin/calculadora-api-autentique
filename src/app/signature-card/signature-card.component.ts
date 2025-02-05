@@ -1,7 +1,7 @@
-// signature-card.component.ts
 import { Component, Input, Output, EventEmitter, OnInit } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
+import { PriceTable } from "../price-config";
 import { PriceService } from "../price-service";
 
 @Component({
@@ -17,57 +17,55 @@ export class SignatureCardComponent implements OnInit {
   @Output() cardUpdate = new EventEmitter<{ index: number; signatory: any }>();
   @Output() removeSignatory = new EventEmitter<void>();
 
-  // Definindo os métodos de envio com preços conforme o PriceService
   methods: { key: string; label: string; price: number }[] = [];
 
   constructor(public priceService: PriceService) {}
 
   ngOnInit() {
-    // Inicializa os métodos de envio usando os preços do PriceService
+    // Monta os métodos usando a tabela de preços atual
+    const prices: PriceTable = this.priceService.currentPrices;
     this.methods = [
       {
         key: "email",
         label: "Solicitação de assinatura por email",
-        price: this.priceService.prices.emailSignatureRequest,
+        price: prices.emailSignatureRequest,
       },
       {
         key: "whatsapp",
         label: "Solicitação de assinatura por Whatsapp",
-        price: this.priceService.prices.whatsappSignatureRequest,
+        price: prices.whatsappSignatureRequest,
       },
       {
         key: "sms",
         label: "Solicitação de assinatura por SMS",
-        price: this.priceService.prices.smsSignatureRequest,
+        price: prices.smsSignatureRequest,
       },
       {
         key: "linkEmail",
         label: "Solicitação de assinatura por link assinado por email",
-        price: this.priceService.prices.emailLinkSignatureRequest,
+        price: prices.emailLinkSignatureRequest,
       },
       {
         key: "linkSms",
         label: "Solicitação de assinatura por link assinado por SMS",
-        price: this.priceService.prices.smsLinkSignatureRequest,
+        price: prices.smsLinkSignatureRequest,
       },
       {
         key: "linkWhatsapp",
         label: "Solicitação de assinatura por link assinado por Whatsapp",
-        price: this.priceService.prices.whatsappLinkSignatureRequest,
+        price: prices.whatsappLinkSignatureRequest,
       },
       {
         key: "smsValidation",
         label: "Assinatura com validação adicional por SMS",
-        price: this.priceService.prices.smsValidation,
+        price: prices.smsValidation,
       },
     ];
   }
 
   toggle() {
-    // Garante que a propriedade expanded exista para controlar o dropdown
-    if (this.signatory) {
-      this.signatory.expanded = !this.signatory.expanded;
-    }
+    // Garante que signatory.expanded exista e altera seu valor para controlar o dropdown.
+    this.signatory.expanded = !this.signatory.expanded;
     this.emitUpdate();
   }
 
@@ -99,7 +97,6 @@ export class SignatureCardComponent implements OnInit {
     return cost;
   }
 
-  // Usa o método do PriceService para formatar o valor conforme a moeda atual
   formatCurrency(value: number): string {
     return this.priceService.formatCurrency(value);
   }

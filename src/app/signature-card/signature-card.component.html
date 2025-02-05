@@ -20,9 +20,7 @@
         [(ngModel)]="signatory[method.key]"
         (change)="emitUpdate()"
       />
-      <span class="currency-label"
-        >{{ method.label }} ({{ formatCurrency(method.price) }})</span
-      >
+      <span>{{ method.label }} ({{ formatCurrency(method.price) }})</span>
     </label>
   </div>
 </div>

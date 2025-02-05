@@ -27,10 +27,7 @@ export class CostsComponent {
 
   get costData() {
     return [
-      {
-        title: "Custo por Documento",
-        value: this.totalCost,
-      },
+      { title: "Custo por Documento", value: this.totalCost },
       {
         title: "Custo Diário Estimado",
         value: this.totalCost * this.documentsPerDay(),
@@ -43,7 +40,6 @@ export class CostsComponent {
     ];
   }
 
-  // Utiliza o método centralizado do PriceService para formatar o valor
   formatCurrency(value: number): string {
     return this.priceService.formatCurrency(value);
   }

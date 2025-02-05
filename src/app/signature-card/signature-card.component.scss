@@ -52,13 +52,14 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: 1rem;
-  padding: 1.5rem;
   max-height: 0;
   overflow: hidden;
   transition: max-height 0.3s ease-out;
+  transition: margin ease-out;
 }
 .methods-grid.expanded {
   max-height: 500px;
+  margin: 1.5rem;
 }
 .method-checkbox {
   display: flex;
