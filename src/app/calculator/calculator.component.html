@@ -1,0 +1,24 @@
+<!-- src/app/calculator/calculator.component.html -->
+<div class="calculator">
+  <h1>Calculadora de Preços</h1>
+
+  <p><strong>Criar documento:</strong> R$ {{ basePrice.toFixed(3) }}</p>
+
+  <h2>Signatários</h2>
+  <div *ngFor="let signer of signers; let i = index" class="signer">
+    <label>Signatário {{ i + 1 }}:</label>
+    <select [(ngModel)]="signer.method">
+      <option value="" disabled>Selecione o método</option>
+      <option *ngFor="let method of methods" [value]="method.value">
+        {{ method.label }}
+      </option>
+    </select>
+    <button (click)="removeSigner(i)" *ngIf="signers.length > 1">
+      Remover
+    </button>
+  </div>
+
+  <button (click)="addSigner()">Adicionar Signatário</button>
+
+  <h2>Total: R$ {{ calcularTotal().toFixed(3) }}</h2>
+</div>

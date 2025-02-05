@@ -1,0 +1,25 @@
+<div class="signatory-card">
+  <div class="signatory-header" (click)="toggle()">
+    <div class="header-left">
+      <h3>Signatário {{ index + 1 }}</h3>
+      <div class="selected-methods">{{ getSelectedMethods() }}</div>
+    </div>
+    <div class="header-right">
+      <div class="method-cost">{{ formatCurrency(calculateCost()) }}</div>
+      <button class="remove-button" (click)="remove($event)">Remover</button>
+      <span class="dropdown-arrow" [class.expanded]="signatory.expanded"
+        >▼</span
+      >
+    </div>
+  </div>
+  <div class="methods-grid" [class.expanded]="signatory.expanded">
+    <label class="method-checkbox" *ngFor="let method of methods">
+      <input
+        type="checkbox"
+        [(ngModel)]="signatory[method.key]"
+        (change)="emitUpdate()"
+      />
+      <span>{{ method.label }} ({{ formatCurrency(method.price) }})</span>
+    </label>
+  </div>
+</div>

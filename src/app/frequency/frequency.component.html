@@ -1,0 +1,26 @@
+<div class="card frequency-section">
+  <h2>Frequência de Uso</h2>
+  <div class="frequency-inputs">
+    <div class="input-group">
+      <label>Documentos por dia:</label>
+      <input
+        type="number"
+        [value]="documentsPerDay()"
+        (input)="onDocumentsPerDay($event)"
+        min="1"
+        class="number-input"
+      />
+    </div>
+    <div class="input-group">
+      <label>Dias úteis por mês:</label>
+      <input
+        type="number"
+        [value]="workingDaysPerMonth()"
+        (input)="onWorkingDays($event)"
+        min="1"
+        max="31"
+        class="number-input"
+      />
+    </div>
+  </div>
+</div>

@@ -1,0 +1,19 @@
+<nav class="top-nav">
+  <div class="nav-content">
+    <div class="nav-left">
+      <img src="autentique-logo.svg" alt="Logo" class="logo" />
+      <span class="nav-title">Calculadora de Custos</span>
+    </div>
+    <div class="currency-toggle">
+      <label class="toggle">
+        <span class="toggle-label">{{ showUSD() ? "USD" : "BRL" }}</span>
+        <input
+          type="checkbox"
+          [checked]="showUSD()"
+          (change)="onToggle($event)"
+        />
+        <span class="toggle-slider"></span>
+      </label>
+    </div>
+  </div>
+</nav>

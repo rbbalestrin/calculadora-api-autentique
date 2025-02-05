@@ -1,0 +1,68 @@
+.signatory-card {
+  background: #f8f9fa;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  overflow: hidden;
+}
+.signatory-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  cursor: pointer;
+  background: #fff;
+  border-bottom: 1px solid #eee;
+}
+.header-left {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+.selected-methods {
+  font-size: 0.875rem;
+  color: #666;
+}
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.method-cost {
+  font-weight: 500;
+  color: #1a73e8;
+}
+.dropdown-arrow {
+  transition: transform 0.3s ease;
+}
+.dropdown-arrow.expanded {
+  transform: rotate(180deg);
+}
+.remove-button {
+  background: #dc3545;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.remove-button:hover {
+  background: #c82333;
+}
+.methods-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+  padding: 1.5rem;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease-out;
+}
+.methods-grid.expanded {
+  max-height: 500px;
+}
+.method-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+}

@@ -1,0 +1,24 @@
+.card {
+  background: #f8f9fa;
+  padding: 1.5rem;
+  border-radius: 8px;
+  text-align: center;
+}
+.cost {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #1a73e8;
+  margin: 0.5rem 0;
+}
+.cost-alternate {
+  color: #666;
+  font-size: 0.9rem;
+}
+.costs-section {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid #eee;
+}
